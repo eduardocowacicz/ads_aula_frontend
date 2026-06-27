@@ -1,0 +1,70 @@
+networks:
+  internal:
+    driver: bridge
+
+services:
+  db:
+    image: postgres:16-alpine
+    networks:
+      - internal
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: sistema_pequena_empresa
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./banco.sql:/docker-entrypoint-initdb.d/01-banco.sql:ro
+      - ./seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+    # Evita conflito com PostgreSQL na máquina host (porta 5432).
+    # Ajuste a porta esquerda se 5433 também estiver em uso.
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d sistema_pequena_empresa"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    networks:
+      - internal
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PORT: "5432"
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_NAME: sistema_pequena_empresa
+      JWT_SECRET: docker_didatico_altere_em_producao_use_string_longa
+      JWT_EXPIRES_SEGUNDOS: "604800"
+      PORT: "3001"
+      CORS_ORIGIN: http://localhost:3000
+      TYPEORM_LOGGING: "false"
+      TYPEORM_SYNC: "false"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    profiles: ["frontend"]
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    networks:
+      - internal
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      BACKEND_API_URL: http://api:3001/api
+    depends_on:
+      - api
+
+volumes:
+  pgdata:

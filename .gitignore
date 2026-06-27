@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+
+# Variáveis de ambiente e segredos (JWT, banco, URLs da API, etc.)
+.env*
+!.env.example
+!.env*.example
+
+# Chaves e certificados
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+id_rsa
+id_rsa.pub
+
+# Credenciais comuns
+credentials.json
+serviceAccount*.json
+.secrets/
+
+# Sistema / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Builds
+**/dist/
+**/.next/
+**/out/
+**/coverage/
+*.tsbuildinfo

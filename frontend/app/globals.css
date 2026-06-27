@@ -1,0 +1,59 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+/* ── Variáveis de marca ─────────────────────────────────────────── */
+:root {
+  --color-primary:       #1e40af;
+  --color-primary-dark:  #172554;
+  --color-secondary:     #ea580c;
+  --color-bg:            #f4f6fb;
+  --color-text:          #0f172a;
+  --color-border:        #e2e8f0;
+
+  /* Sobrescreve Bootstrap */
+  --bs-primary:          #1e40af;
+  --bs-primary-rgb:      30, 64, 175;
+  --bs-secondary:        #ea580c;
+  --bs-secondary-rgb:    234, 88, 12;
+  --bs-body-bg:          #f4f6fb;
+  --bs-body-color:       #0f172a;
+  --bs-border-color:     #e2e8f0;
+  --bs-link-color:       #1d4ed8;
+  --bs-link-hover-color: #172554;
+}
+
+/* ── Reset básico ───────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: var(--color-text);
+  background: var(--color-bg);
+  font-family: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ── Fundo das páginas públicas (frontpage, login) ──────────────── */
+.auth-shell {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 40%, #1d4ed8 70%, #2563eb 100%);
+}
