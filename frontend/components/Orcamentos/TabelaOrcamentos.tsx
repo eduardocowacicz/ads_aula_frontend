@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { getOrcamentos } from "@/app/(system)/orcamentos/actions";
 import type { Orcamento, SituacaoOrcamento } from "@/types/orcamentos";
+import PopUpInclusaoEdicaoOrcamentos from "./PopUpInclusaoEdicaoOrcamentos";
 import styles from "./Orcamentos.module.css";
 
 const MESES = [
@@ -21,13 +22,22 @@ const MESES = [
   { value: "12", label: "Dezembro" },
 ];
 
-const SITUACOES: { value: string; label: string }[] = [
+const SITUACOES = [
   { value: "",          label: "Todas as situações" },
-  { value: "PENDENTE",  label: "Pendente" },
-  { value: "APROVADO",  label: "Aprovado" },
-  { value: "RECUSADO",  label: "Recusado" },
-  { value: "CANCELADO", label: "Cancelado" },
+  { value: "pendente",  label: "Pendente" },
+  { value: "enviado",   label: "Enviado" },
+  { value: "aprovado",  label: "Aprovado" },
+  { value: "rejeitado", label: "Rejeitado" },
+  { value: "cancelado", label: "Cancelado" },
 ];
+
+const LABEL_SITUACAO: Record<SituacaoOrcamento, string> = {
+  pendente:  "Pendente",
+  enviado:   "Enviado",
+  aprovado:  "Aprovado",
+  rejeitado: "Rejeitado",
+  cancelado: "Cancelado",
+};
 
 function anoAtual() {
   return new Date().getFullYear();
@@ -35,10 +45,11 @@ function anoAtual() {
 
 function badgeSituacao(situacao: SituacaoOrcamento) {
   const map: Record<SituacaoOrcamento, string> = {
-    PENDENTE:  styles.badgePendente,
-    APROVADO:  styles.badgeAprovado,
-    RECUSADO:  styles.badgeRecusado,
-    CANCELADO: styles.badgeCancelado,
+    pendente:  styles.badgePendente,
+    enviado:   styles.badgeEnviado,
+    aprovado:  styles.badgeAprovado,
+    rejeitado: styles.badgeRecusado,
+    cancelado: styles.badgeCancelado,
   };
   return map[situacao] ?? styles.badgePendente;
 }
@@ -62,6 +73,9 @@ export default function TabelaOrcamentos() {
   const [filtroMes, setFiltroMes] = useState("");
   const [filtroAno, setFiltroAno] = useState(anoDefault);
   const [filtroSituacao, setFiltroSituacao] = useState("");
+
+  const [showModal, setShowModal] = useState(false);
+  const [idSelecionado, setIdSelecionado] = useState<number | null | undefined>(null);
 
   const carregar = useCallback(async () => {
     setCarregando(true);
@@ -92,6 +106,21 @@ export default function TabelaOrcamentos() {
     setFiltroSituacao("");
   };
 
+  const handleNovo = () => {
+    setIdSelecionado(null);
+    setShowModal(true);
+  };
+
+  const handleEditar = (id: number | undefined) => {
+    setIdSelecionado(id ?? null);
+    setShowModal(true);
+  };
+
+  const handleSalvo = () => {
+    setShowModal(false);
+    carregar();
+  };
+
   return (
     <div>
       {/* Cabeçalho */}
@@ -100,6 +129,9 @@ export default function TabelaOrcamentos() {
           <h1 className={styles.titulo}>Orçamentos</h1>
           <p className={styles.subtitulo}>{orcamentos.length} orçamento(s) encontrado(s)</p>
         </div>
+        <button className={`btn btn-primary ${styles.btnNovo}`} onClick={handleNovo}>
+          + Novo Orçamento
+        </button>
       </div>
 
       {/* Filtros */}
@@ -165,7 +197,7 @@ export default function TabelaOrcamentos() {
                 <th>Data</th>
                 <th>Total</th>
                 <th>Situação</th>
-                <th>Observação</th>
+                <th>Ações</th>
               </tr>
             </thead>
             <tbody>
@@ -180,23 +212,20 @@ export default function TabelaOrcamentos() {
                   <tr key={o.id}>
                     <td className={styles.idCol}>#{o.id}</td>
                     <td>{o.cliente?.nome ?? `Cliente #${o.clienteId}`}</td>
-                    <td>{formatarData(o.dataCriacao)}</td>
+                    <td>{formatarData(o.criadoEm)}</td>
                     <td className={styles.total}>{formatarMoeda(o.total)}</td>
                     <td>
                       <span className={`${styles.badge} ${badgeSituacao(o.situacao)}`}>
-                        {o.situacao}
+                        {LABEL_SITUACAO[o.situacao] ?? o.situacao}
                       </span>
                     </td>
-                    <td className={styles.obs}>
-                      {o.observacao ? (
-                        <span title={o.observacao}>
-                          {o.observacao.length > 40
-                            ? o.observacao.slice(0, 40) + "…"
-                            : o.observacao}
-                        </span>
-                      ) : (
-                        <span className={styles.semObs}>—</span>
-                      )}
+                    <td>
+                      <button
+                        className="btn btn-sm btn-outline-primary"
+                        onClick={() => handleEditar(o.id)}
+                      >
+                        Editar
+                      </button>
                     </td>
                   </tr>
                 ))
@@ -205,6 +234,14 @@ export default function TabelaOrcamentos() {
           </table>
         </div>
       )}
+
+      {/* Modal */}
+      <PopUpInclusaoEdicaoOrcamentos
+        visible={showModal}
+        codOrcamento={idSelecionado}
+        onHide={() => setShowModal(false)}
+        onSaveSuccess={handleSalvo}
+      />
     </div>
   );
 }

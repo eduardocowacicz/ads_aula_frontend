@@ -1,0 +1,106 @@
+/* ── Estrutura ───────────────────────────────────────────────────── */
+.shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.conteudo {
+  flex: 1;
+}
+
+/* ── Cabeçalho ───────────────────────────────────────────────────── */
+.cabecalho {
+  background: var(--color-primary-dark);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+}
+
+.barra {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.05rem;
+  white-space: nowrap;
+}
+
+.menu {
+  display: flex;
+  gap: 0.25rem;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.link {
+  color: #cbd5e1;
+  font-size: 0.92rem;
+  font-weight: 500;
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, .08);
+}
+
+.linkAtivo {
+  color: #fff;
+  background: var(--color-primary);
+}
+
+.btnSair {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, .35);
+  border-radius: 8px;
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btnSair:hover {
+  background: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
+/* ── Rodapé ──────────────────────────────────────────────────────── */
+.rodape {
+  background: #fff;
+  border-top: 1px solid var(--color-border);
+  margin-top: 2rem;
+}
+
+.rodapeBarra {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.rodapeInfo {
+  color: #94a3b8;
+}

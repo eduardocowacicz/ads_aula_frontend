@@ -12,12 +12,16 @@ function isPublicPath(pathname: string) {
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
+  const token = request.cookies.get(JWT_COOKIE)?.value
+
+  if (token && pathname === '/login') {
+    return NextResponse.redirect(new URL('/home', request.url))
+  }
 
   if (isPublicPath(pathname)) {
     return NextResponse.next()
   }
 
-  const token = request.cookies.get(JWT_COOKIE)?.value
   if (!token) {
     const loginUrl = new URL('/login', request.url)
     loginUrl.searchParams.set('from', pathname)
