@@ -1,11 +1,11 @@
-export default function Home() {
-	return(
-		<div>
-			<h1>Home</h1>
-			<p>Bem-vindo ao sistema de pequena empresa</p>
-			<p>Este é um sistema de pequena empresa</p>
-			<p>Este é um sistema de pequena empresa</p>
-		</div>
-	)
+'use client';
 
+import Dashboard from '@/components/Dashboard';
+
+export default function Home() {
+  return (
+    <div className="container py-4">
+      <Dashboard />
+    </div>
+  );
 }

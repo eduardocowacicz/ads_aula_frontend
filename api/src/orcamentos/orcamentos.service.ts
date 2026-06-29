@@ -95,6 +95,7 @@ export class OrcamentosService {
 
       for (const item of itensEntidade) {
         item.orcamentoId = orcamento.id;
+        item.orcamento = orcamento;
       }
       await queryRunner.manager.save(ItemOrcamento, itensEntidade);
 
@@ -152,8 +153,10 @@ export class OrcamentosService {
         subtotal = montado.subtotal;
         for (const item of montado.itensEntidade) {
           item.orcamentoId = id;
+          item.orcamento = orcamento;
         }
         await queryRunner.manager.save(ItemOrcamento, montado.itensEntidade);
+        orcamento.itens = montado.itensEntidade;
       }
 
       const total = arredondar2(Math.max(0, subtotal - valorDesconto));

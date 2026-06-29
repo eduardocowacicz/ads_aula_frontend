@@ -1,0 +1,158 @@
+/* ── Página ──────────────────────────────────────────────────────── */
+.dashboard {
+  padding: 1.5rem 0;
+}
+
+.titulo {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: 1.5rem;
+}
+
+/* ── Loading ─────────────────────────────────────────────────────── */
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: center;
+  padding: 4rem;
+  color: #64748b;
+}
+
+/* ── Cards de resumo ─────────────────────────────────────────────── */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.07);
+  color: #fff;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,.12);
+}
+
+.azul    { background: linear-gradient(135deg, #1e40af, #3b82f6); }
+.verde   { background: linear-gradient(135deg, #065f46, #10b981); }
+.laranja { background: linear-gradient(135deg, #9a3412, #f97316); }
+.roxo    { background: linear-gradient(135deg, #581c87, #a855f7); }
+
+.cardIcone {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.cardInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.cardTitulo {
+  font-size: 0.8rem;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.cardValor {
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* ── Gráficos ────────────────────────────────────────────────────── */
+.graficos {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .graficos { grid-template-columns: 1fr; }
+}
+
+.graficoCard {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+}
+
+.graficoTitulo {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  margin-bottom: 1rem;
+}
+
+.graficoPizzaWrapper {
+  max-width: 260px;
+  margin: 0 auto;
+}
+
+/* ── Rankings ────────────────────────────────────────────────────── */
+.rankings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .rankings { grid-template-columns: 1fr; }
+}
+
+.rankingCard {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+}
+
+.tabelaRanking {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.tabelaRanking thead th {
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.82rem;
+  padding: 0.6rem 0.75rem;
+  border: none;
+}
+
+.tabelaRanking tbody td {
+  padding: 0.6rem 0.75rem;
+  border-color: var(--color-border);
+  vertical-align: middle;
+}
+
+.rankPos {
+  font-family: monospace;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.rankValor {
+  font-weight: 600;
+  color: var(--color-primary-dark);
+}
+
+.vazio {
+  text-align: center;
+  color: #94a3b8;
+  padding: 1.5rem !important;
+}

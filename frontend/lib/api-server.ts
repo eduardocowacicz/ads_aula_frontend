@@ -15,5 +15,9 @@ export async function apiServerFetch(
 	headers.set('Authorization', `Bearer ${jwt}`)
 	headers.set('Content-Type', 'application/json')
 
-	return fetch(`${base}${p}`, { ...init, headers })
+	try {
+		return await fetch(`${base}${p}`, { ...init, headers })
+	} catch {
+		throw new Error('Não foi possível conectar à API. Verifique se o servidor está em execução.')
+	}
 }

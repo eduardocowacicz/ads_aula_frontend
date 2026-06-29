@@ -27,14 +27,24 @@ export async function login(
 
   const backendApiUrl = process.env.BACKEND_API_URL
 
-  const response = await fetch(`${backendApiUrl}/autenticacao/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, senha }),
-  })
+  let response: Response
+  try {
+    response = await fetch(`${backendApiUrl}/autenticacao/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, senha }),
+    })
+  } catch {
+    return { error: 'Não foi possível conectar ao servidor. Verifique se a API está em execução.' }
+  }
 
   if (!response.ok) {
-    return { error: 'Credenciais inválidas' }
+    let mensagem = 'Credenciais inválidas'
+    try {
+      const body = await response.json() as { mensagem?: string; message?: string }
+      mensagem = body.mensagem ?? body.message ?? mensagem
+    } catch { /* ignora */ }
+    return { error: mensagem }
   }
 
   const data = (await response.json()) as { accessToken?: string }

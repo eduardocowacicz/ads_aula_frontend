@@ -18,9 +18,14 @@ export default function TabelaProdutos() {
 
   const carregarProdutos = async () => {
     setCarregando(true);
-    const data = await getProdutos({ nome: filtroNome, ativo: filtroAtivo });
-    setProdutos(data);
-    setCarregando(false);
+    try {
+      const data = await getProdutos({ nome: filtroNome, ativo: filtroAtivo });
+      setProdutos(data);
+    } catch {
+      notify("Não foi possível carregar os produtos.", "danger");
+    } finally {
+      setCarregando(false);
+    }
   };
 
   useEffect(() => {

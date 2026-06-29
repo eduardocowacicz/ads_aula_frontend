@@ -29,14 +29,23 @@ export class DashboardService {
   ) {}
 
   async resumo(): Promise<DashboardResumoDto> {
-    const [totalOrcamentos, totalClientes, totalProdutosAtivos] =
+    const [totalOrcamentos, totalClientes, totalProdutosAtivos, { sum }] =
       await Promise.all([
         this.orcamentoRepository.count(),
         this.clienteRepository.count(),
         this.produtoRepository.count({ where: { ativo: true } }),
+        this.orcamentoRepository
+          .createQueryBuilder('o')
+          .select('COALESCE(SUM(o.total), 0)', 'sum')
+          .getRawOne(),
       ]);
 
-    return { totalOrcamentos, totalClientes, totalProdutosAtivos };
+    return { 
+      totalOrcamentos, 
+      totalClientes, 
+      totalProdutosAtivos,
+      valorTotalOrcado: Number(sum)
+    };
   }
 
   async orcamentosPorStatus(): Promise<OrcamentosPorStatusDto[]> {
